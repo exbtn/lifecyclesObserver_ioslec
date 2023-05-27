@@ -10,6 +10,7 @@
 		6D2F5B212A220D9800829B16 /* lifecycleObservers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D2F5B182A220D9800829B16 /* lifecycleObservers.framework */; };
 		6D2F5B262A220D9800829B16 /* lifecycleObserversTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D2F5B252A220D9800829B16 /* lifecycleObserversTests.swift */; };
 		6D2F5B272A220D9800829B16 /* lifecycleObservers.h in Headers */ = {isa = PBXBuildFile; fileRef = 6D2F5B1B2A220D9800829B16 /* lifecycleObservers.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6D2F5B312A220E3B00829B16 /* UIViewController+LifecycleObservers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D2F5B302A220E3B00829B16 /* UIViewController+LifecycleObservers.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -27,6 +28,7 @@
 		6D2F5B1B2A220D9800829B16 /* lifecycleObservers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = lifecycleObservers.h; sourceTree = "<group>"; };
 		6D2F5B202A220D9800829B16 /* lifecycleObserversTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = lifecycleObserversTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6D2F5B252A220D9800829B16 /* lifecycleObserversTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = lifecycleObserversTests.swift; sourceTree = "<group>"; };
+		6D2F5B302A220E3B00829B16 /* UIViewController+LifecycleObservers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+LifecycleObservers.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,6 +72,7 @@
 			isa = PBXGroup;
 			children = (
 				6D2F5B1B2A220D9800829B16 /* lifecycleObservers.h */,
+				6D2F5B302A220E3B00829B16 /* UIViewController+LifecycleObservers.swift */,
 			);
 			path = lifecycleObservers;
 			sourceTree = "<group>";
@@ -144,6 +147,7 @@
 				TargetAttributes = {
 					6D2F5B172A220D9800829B16 = {
 						CreatedOnToolsVersion = 14.3;
+						LastSwiftMigration = 1430;
 					};
 					6D2F5B1F2A220D9800829B16 = {
 						CreatedOnToolsVersion = 14.3;
@@ -191,6 +195,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6D2F5B312A220E3B00829B16 /* UIViewController+LifecycleObservers.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -336,6 +341,7 @@
 		6D2F5B2B2A220D9800829B16 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -359,6 +365,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -367,6 +374,7 @@
 		6D2F5B2C2A220D9800829B16 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -398,6 +406,7 @@
 		6D2F5B2E2A220D9800829B16 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = T6G7397HUK;
@@ -414,6 +423,7 @@
 		6D2F5B2F2A220D9800829B16 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = T6G7397HUK;
