@@ -7,92 +7,90 @@
 
 import UIKit
 
-protocol UIViewControllerLifecycleObserver {
+protocol Observer {
     func remove()
 }
 
 extension UIViewController {
     @discardableResult
-    func onViewWillAppear(run callback: @escaping () -> Void) -> UIViewControllerLifecycleObserver {
-        let observer = ViewControllerLifecycleObserver(viewWillAppearCallback: callback)
-        add(observer)
-        return observer
+    func onViewWillAppear(run callback: @escaping () -> Void) -> Observer {
+        return ViewControllerLifecycleObserver(
+            parent: self,
+            viewWillAppearCallback: callback
+        )
     }
     
     @discardableResult
-    func onViewDidAppear(run callback: @escaping () -> Void) -> UIViewControllerLifecycleObserver {
-        let observer = ViewControllerLifecycleObserver(viewDidAppearCallback: callback)
-        add(observer)
-        return observer
+    func onViewDidAppear(run callback: @escaping () -> Void) -> Observer {
+        return ViewControllerLifecycleObserver(
+            parent: self,
+            viewDidAppearCallback: callback
+        )
     }
     
     @discardableResult
-    func onViewWillDisappear(run callback: @escaping () -> Void) -> UIViewControllerLifecycleObserver {
-        let observer = ViewControllerLifecycleObserver(viewWillDisappearCallback: callback)
-        add(observer)
-        return observer
+    func onViewWillDisappear(run callback: @escaping () -> Void) -> Observer {
+        return ViewControllerLifecycleObserver(
+            parent: self,
+            viewWillDisappearCallback: callback
+        )
     }
     
     @discardableResult
-    func onViewDidDisappear(run callback: @escaping () -> Void) -> UIViewControllerLifecycleObserver {
-        let observer = ViewControllerLifecycleObserver(viewDidDisappearCallback: callback)
-        add(observer)
-        return observer
-    }
-    
-    private func add(_ observer: UIViewController) {
-        addChild(observer)
-        observer.view.isHidden = true
-        view.addSubview(observer.view)
-        observer.didMove(toParent: self)
+    func onViewDidDisappear(run callback: @escaping () -> Void) -> Observer {
+        return ViewControllerLifecycleObserver(
+            parent: self,
+            viewDidDisappearCallback: callback
+        )
     }
 }
 
-private class ViewControllerLifecycleObserver: UIViewController, UIViewControllerLifecycleObserver {
+private class ViewControllerLifecycleObserver: UIViewController, Observer {
     
-    private var viewWillAppearCallback: () -> Void = {}
-    private var viewDidAppearCallback: () -> Void = {}
-    private var viewWillDisappearCallback: () -> Void = {}
-    private var viewDidDisappearCallback: () -> Void = {}
+    private var viewWillAppearCallback: (() -> Void)?
+    private var viewDidAppearCallback: (() -> Void)?
+    private var viewWillDisappearCallback: (() -> Void)?
+    private var viewDidDisappearCallback: (() -> Void)?
     
-    convenience init(viewWillAppearCallback: @escaping () -> Void = {}) {
+    convenience init(
+        parent: UIViewController,
+        viewWillAppearCallback: (() -> Void)? = nil,
+        viewDidAppearCallback: (() -> Void)? = nil,
+        viewWillDisappearCallback: (() -> Void)? = nil,
+        viewDidDisappearCallback: (() -> Void)? = nil) {
         self.init()
+        self.add(parent)
         self.viewWillAppearCallback = viewWillAppearCallback
-    }
-    
-    convenience init(viewDidAppearCallback: @escaping () -> Void = {}) {
-        self.init()
         self.viewDidAppearCallback = viewDidAppearCallback
-    }
-    
-    convenience init(viewWillDisappearCallback: @escaping () -> Void = {}) {
-        self.init()
         self.viewWillDisappearCallback = viewWillDisappearCallback
-    }
-    
-    convenience init(viewDidDisappearCallback: @escaping () -> Void = {}) {
-        self.init()
         self.viewDidDisappearCallback = viewDidDisappearCallback
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        viewWillAppearCallback()
+        viewWillAppearCallback?()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        viewDidAppearCallback()
+        viewDidAppearCallback?()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        viewWillDisappearCallback()
+        viewWillDisappearCallback?()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        viewDidDisappearCallback()
+        viewDidDisappearCallback?()
+    }
+    
+    private func add(_ parent: UIViewController) {
+        parent.addChild(self)
+        view.isHidden = true
+        parent.view.addSubview(view)
+        didMove(toParent: parent)
     }
     
     func remove() {
