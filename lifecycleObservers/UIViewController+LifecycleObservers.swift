@@ -33,6 +33,13 @@ extension UIViewController {
         return observer
     }
     
+    @discardableResult
+    func onViewDidDisappear(run callback: @escaping () -> Void) -> UIViewControllerLifecycleObserver {
+        let observer = ViewControllerLifecycleObserver(viewDidDisappearCallback: callback)
+        add(observer)
+        return observer
+    }
+    
     private func add(_ observer: UIViewController) {
         addChild(observer)
         observer.view.isHidden = true
@@ -46,6 +53,7 @@ private class ViewControllerLifecycleObserver: UIViewController, UIViewControlle
     private var viewWillAppearCallback: () -> Void = {}
     private var viewDidAppearCallback: () -> Void = {}
     private var viewWillDisappearCallback: () -> Void = {}
+    private var viewDidDisappearCallback: () -> Void = {}
     
     convenience init(viewWillAppearCallback: @escaping () -> Void = {}) {
         self.init()
@@ -62,6 +70,11 @@ private class ViewControllerLifecycleObserver: UIViewController, UIViewControlle
         self.viewWillDisappearCallback = viewWillDisappearCallback
     }
     
+    convenience init(viewDidDisappearCallback: @escaping () -> Void = {}) {
+        self.init()
+        self.viewDidDisappearCallback = viewDidDisappearCallback
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         viewWillAppearCallback()
@@ -75,6 +88,11 @@ private class ViewControllerLifecycleObserver: UIViewController, UIViewControlle
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         viewWillDisappearCallback()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        viewDidDisappearCallback()
     }
     
     func remove() {

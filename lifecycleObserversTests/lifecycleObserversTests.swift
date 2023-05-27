@@ -190,4 +190,64 @@ final class lifecycleObserversTests: XCTestCase {
         XCTAssertEqual(sut.view.subviews.count, 0)
     }
     
+    // MARK: ViewDidDisappear Tests
+    
+    func test_viewDidDisappearObserverIsAddedAsChild() {
+        let sut = UIViewController()
+        
+        sut.onViewDidDisappear {}
+        
+        XCTAssertEqual(sut.children.count, 1)
+    }
+    
+    func test_viewDidDisappearObserverViewIsAddedAsSubview() {
+        let sut = UIViewController()
+        
+        sut.onViewDidDisappear {}
+        
+        let observer = sut.children.first
+        XCTAssertEqual(observer?.view.superview, sut.view)
+    }
+
+    func test_viewDidDisappearObserviewViewIsInvisible() {
+        let sut = UIViewController()
+        
+        sut.onViewDidDisappear {}
+        
+        let observer = sut.children.first
+        XCTAssertEqual(observer?.view.isHidden, true)
+    }
+    
+    func test_viewDidDisappearObserverFiresCallback() {
+        let sut = UIViewController()
+        
+        var callCount = 0
+        sut.onViewDidDisappear { callCount += 1 }
+        
+        let observer = sut.children.first
+        XCTAssertEqual(callCount, 0)
+        
+        observer?.viewDidDisappear(false)
+        XCTAssertEqual(callCount, 1)
+        
+        observer?.viewDidDisappear(false)
+        XCTAssertEqual(callCount, 2)
+    }
+    
+    func test_canRemoveViewDidDisappearObserver() {
+        let sut = UIViewController()
+        
+        sut.onViewDidDisappear(run: { }).remove()
+        
+        XCTAssertEqual(sut.children.count, 0)
+    }
+    
+    func test_canRemoveViewDidDisappearObserverView() {
+        let sut = UIViewController()
+        
+        sut.onViewDidDisappear(run: { }).remove()
+        
+        XCTAssertEqual(sut.view.subviews.count, 0)
+    }
+    
 }
