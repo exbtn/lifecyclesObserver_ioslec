@@ -10,6 +10,8 @@ import XCTest
 
 final class lifecycleObserversTests: XCTestCase {
 
+    // MARK: ViewWillAppear Tests
+    
     func test_viewWillAppearObserverIsAddedAsChild() {
         let sut = UIViewController()
         
@@ -64,6 +66,66 @@ final class lifecycleObserversTests: XCTestCase {
         let sut = UIViewController()
         
         sut.onViewWillAppear(run: { }).remove()
+        
+        XCTAssertEqual(sut.view.subviews.count, 0)
+    }
+    
+    // MARK: ViewDidAppear Tests
+    
+    func test_viewDidAppearObserverIsAddedAsChild() {
+        let sut = UIViewController()
+        
+        sut.onViewDidAppear {}
+        
+        XCTAssertEqual(sut.children.count, 1)
+    }
+    
+    func test_viewDidAppearObserverViewIsAddedAsSubview() {
+        let sut = UIViewController()
+        
+        sut.onViewDidAppear {}
+        
+        let observer = sut.children.first
+        XCTAssertEqual(observer?.view.superview, sut.view)
+    }
+
+    func test_viewDidAppearObserviewViewIsInvisible() {
+        let sut = UIViewController()
+        
+        sut.onViewDidAppear {}
+        
+        let observer = sut.children.first
+        XCTAssertEqual(observer?.view.isHidden, true)
+    }
+    
+    func test_viewDidAppearObserverFiresCallback() {
+        let sut = UIViewController()
+        
+        var callCount = 0
+        sut.onViewDidAppear { callCount += 1 }
+        
+        let observer = sut.children.first
+        XCTAssertEqual(callCount, 0)
+        
+        observer?.viewDidAppear(false)
+        XCTAssertEqual(callCount, 1)
+        
+        observer?.viewDidAppear(false)
+        XCTAssertEqual(callCount, 2)
+    }
+    
+    func test_canRemoveViewDidAppearObserver() {
+        let sut = UIViewController()
+        
+        sut.onViewDidAppear(run: { }).remove()
+        
+        XCTAssertEqual(sut.children.count, 0)
+    }
+    
+    func test_canRemoveViewDidAppearObserverView() {
+        let sut = UIViewController()
+        
+        sut.onViewDidAppear(run: { }).remove()
         
         XCTAssertEqual(sut.view.subviews.count, 0)
     }
